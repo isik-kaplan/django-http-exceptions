@@ -62,7 +62,7 @@ You can just write
 #### `HTTPExceptions.BASE_EXCEPTON`  
 The base exception for all http exception
 
-####`HTTPExceptions.BASE_EXCEPTION.with_response(response)`  
+#### `HTTPExceptions.BASE_EXCEPTION.with_response(response)`  
 This is the method for rasing exceptions with a response. You can put any response in this method while raising your
 error.
  
