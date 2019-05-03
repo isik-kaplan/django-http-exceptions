@@ -1,3 +1,8 @@
+[![Build Status](https://travis-ci.org/isik-kaplan/django_http_exceptions.svg?branch=master)](https://travis-ci.org/isik-kaplan/django_http_exceptions)
+[![PyPI - License](https://img.shields.io/pypi/l/django_http_exceptions.svg)](https://pypi.org/project/django-http-exceptions/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/django_http_exceptions.svg)](https://pypi.org/project/django-http-exceptions/)
+
+
 ## What is *django_http_exceptions*?
 
 It is raisable exceptions for your django views.
