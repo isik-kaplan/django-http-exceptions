@@ -92,6 +92,17 @@ Just there for to exception handling to work.
 #### `ThreadLocalRequestMiddleware` 
  
 Just there for to `get_current_request` to work.
+
+#### `errorify(error)`
+
+Decorator that turns a view (both class and function) into an http error
+
+````python
+@errorify(HTTPExceptions.PAYMENT_REQUIRED)
+class Subscribe(TemplateView):
+    template = SUBSCRIBE_TEMPLATE
+````
+
  
 ## Avaliable Exceptions
 ```py
