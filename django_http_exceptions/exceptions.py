@@ -46,9 +46,6 @@ class transform(type):
 
 class HTTPException(Exception):
     """@DynamicAttrs."""
-    status: int
-    description: str
-    response: HttpResponse
 
     @classmethod
     def with_response(cls, response):
