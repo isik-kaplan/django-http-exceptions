@@ -1,5 +1,7 @@
 from http import HTTPStatus
 
+from django.http import HttpResponse
+
 
 def _is_dunder(name):
     """Returns True if a __dunder__ name, False otherwise."""
@@ -50,6 +52,12 @@ class HTTPException(Exception):
         exception = cls()
         response.status_code = exception.status
         exception.response = response
+        return exception
+
+    @classmethod
+    def with_content(cls, content):
+        exception = cls()
+        exception.response = HttpResponse(content, status=exception.status)
         return exception
 
     @classmethod
