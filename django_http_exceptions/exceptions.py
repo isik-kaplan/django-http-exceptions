@@ -11,7 +11,7 @@ def _is_dunder(name):
             len(name) > 4)
 
 
-class Transform(type):
+class transform(type):
     """A metaclass to help automatically apply a function to all 3rd party members of a class
 
     @DynamicAttrs."""
@@ -66,7 +66,7 @@ class HTTPException(Exception):
 
     @classmethod
     def _has_default_view(cls):
-        return getattr(cls, '_default_view')
+        return hasattr(cls, '_default_view')
 
     @classmethod
     def _get_default_view_response(cls, request):
@@ -79,7 +79,7 @@ class HTTPException(Exception):
         return self
 
 
-class HTTPExceptions(metaclass=Transform):
+class HTTPExceptions(metaclass=transform):
     """@DynamicAttrs."""  # PycharmDisableInspection
     BASE_EXCEPTION = HTTPException
 
