@@ -14,7 +14,9 @@ def errorify(error):
 
 
 def _errorify_class(cls, error):
-    return method_decorator(functools.partial(_errorify_function, error=error), name='dispatch')(cls)
+    return method_decorator(
+        functools.partial(_errorify_function, error=error), name='dispatch'
+    )(cls)
 
 
 def _errorify_function(f, error):

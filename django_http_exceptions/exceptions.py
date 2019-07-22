@@ -1,7 +1,5 @@
 from http import HTTPStatus
 
-from django.http import HttpResponse
-
 
 def _is_dunder(name):
     """Returns True if a __dunder__ name, False otherwise."""
@@ -11,18 +9,18 @@ def _is_dunder(name):
             len(name) > 4)
 
 
-class transform(type):
-    """@DynamicAttrs."""
-    """A metaclass to help automatically apply a function to all 3rd party members of a class"""
+class Transform(type):
+    """A metaclass to help automatically apply a function to all 3rd party members of a class
+
+    @DynamicAttrs."""
 
     def __setattr__(self, key, value):
         return super().__setattr__(key, self.__transform__(value))
 
     @staticmethod
     def __raise_on_new(klass):
-        """
-        We don't want our transform types to be initilizable, they are only there to group together similiar items.
-        """
+        """We don't want our transform types to be initilizable, they are only there to group
+        together similiar items."""
 
         def __new__(cls, *a, **kw):
             raise TypeError('{} can not be initilazed.'.format(klass))
@@ -73,7 +71,7 @@ class HTTPException(Exception):
         return self
 
 
-class HTTPExceptions(metaclass=transform):
+class HTTPExceptions(metaclass=Transform):
     """@DynamicAttrs."""  # PycharmDisableInspection
     BASE_EXCEPTION = HTTPException
 
@@ -81,7 +79,8 @@ class HTTPExceptions(metaclass=transform):
         return type(
             value.name,
             (HTTPException,),
-            {'__module__': 'HTTPExceptions', 'status': value.value, 'description': value.description}
+            {'__module__': 'HTTPExceptions', 'status': value.value,
+             'description': value.description}
         )
 
     def __checks__(key, value):
@@ -100,5 +99,3 @@ class HTTPExceptions(metaclass=transform):
     # Add all possible HTTP status codes from http.HTTPStatus
     for status in list(HTTPStatus.__members__.values()):
         locals()[status.name] = status
-
-
