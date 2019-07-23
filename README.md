@@ -91,8 +91,8 @@ status code `410`
 #### `HTTPExceptions.BASE_EXCEPTION.with_content(content)`  
 This method allow to raise an **HTTPException** with a custom message (can be either `str` or `bytes`).
 
-For instance, `HTTPExceptions.NOT_FOUND.with_content('The user named 'username' could not be found')`
-would return something equivalent to `HttpResponse('The user named 'username' could not be found', status=404)`.
+For instance, `HTTPExceptions.NOT_FOUND.with_content("The user named 'username' could not be found")`
+would return something equivalent to `HttpResponse("The user named 'username' could not be found", status=404)`.
 
 
 #### `HTTPExceptions.BASE_EXCEPTION.register_default_view(view)`  
