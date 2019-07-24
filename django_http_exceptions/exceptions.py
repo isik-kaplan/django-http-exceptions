@@ -12,17 +12,17 @@ def _is_dunder(name):
 
 
 class transform(type):
-    """@DynamicAttrs."""
-    """A metaclass to help automatically apply a function to all 3rd party members of a class"""
+    """A metaclass to help automatically apply a function to all 3rd party members of a class
+
+    @DynamicAttrs."""
 
     def __setattr__(self, key, value):
         return super().__setattr__(key, self.__transform__(value))
 
     @staticmethod
     def __raise_on_new(klass):
-        """
-        We don't want our transform types to be initilizable, they are only there to group together similiar items.
-        """
+        """We don't want our transform types to be initilizable, they are only there to group
+        together similiar items."""
 
         def __new__(cls, *a, **kw):
             raise TypeError('{} can not be initilazed.'.format(klass))
@@ -46,9 +46,6 @@ class transform(type):
 
 class HTTPException(Exception):
     """@DynamicAttrs."""
-    status: int
-    description: str
-    response: HttpResponse
 
     @classmethod
     def with_response(cls, response):
@@ -58,12 +55,18 @@ class HTTPException(Exception):
         return exception
 
     @classmethod
+    def with_content(cls, content):
+        exception = cls()
+        exception.response = HttpResponse(content, status=exception.status)
+        return exception
+
+    @classmethod
     def register_default_view(cls, view):
         cls._default_view = staticmethod(view)
 
     @classmethod
     def _has_default_view(cls):
-        return getattr(cls, '_default_view')
+        return hasattr(cls, '_default_view')
 
     @classmethod
     def _get_default_view_response(cls, request):
@@ -84,7 +87,8 @@ class HTTPExceptions(metaclass=transform):
         return type(
             value.name,
             (HTTPException,),
-            {'__module__': 'HTTPExceptions', 'status': value.value, 'description': value.description}
+            {'__module__': 'HTTPExceptions', 'status': value.value,
+             'description': value.description}
         )
 
     def __checks__(key, value):
@@ -103,5 +107,3 @@ class HTTPExceptions(metaclass=transform):
     # Add all possible HTTP status codes from http.HTTPStatus
     for status in list(HTTPStatus.__members__.values()):
         locals()[status.name] = status
-
-

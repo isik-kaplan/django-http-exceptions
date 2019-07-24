@@ -1,5 +1,6 @@
 from .exceptions import HTTPExceptions
-from .middleware import get_current_request, ExceptionHandlerMiddleware, ThreadLocalRequestMiddleware
+from .middleware import (get_current_request, ExceptionHandlerMiddleware,
+                         ThreadLocalRequestMiddleware)
 
 __all__ = [
     'HTTPExceptions',

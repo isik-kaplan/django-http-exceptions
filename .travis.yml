@@ -1,14 +1,36 @@
 language: python
-python:
-- '3.5'
-- '3.6'
+
+dist: xenial
+
+sudo: required
+
+matrix:
+  include:
+    - python: '3.5'
+      env: TOXENV=py35-django20
+    - python: '3.6'
+      env: TOXENV=py36-django20
+    - python: '3.7'
+      env: TOXENV=py37-django20
+
+    - python: '3.5'
+      env: TOXENV=py35-django21
+    - python: '3.6'
+      env: TOXENV=py36-django21
+    - python: '3.7'
+      env: TOXENV=py37-django21
+
+    - python: '3.5'
+      env: TOXENV=py35-django22
+    - python: '3.6'
+      env: TOXENV=py36-django22
+    - python: '3.7'
+      env: TOXENV=py37-django22
+
 install:
-- pip install django
-script:
-- python -c "__import__('sys').exit(0)"
-deploy:
-  provider: pypi
-  user: isik-kaplan
-  skip_existing: true
-  password:
-    secure: SNxQU3Ul9nhi6cvIaykmCiVdHg3nHMUNFrcVIjstT8FQGwn+TBKqeKaKfeJpwPjxqJCfm+QuS/wqM47Z0KzWJMoNwFGmP5EhBGLR5kWM5zgDllFQxxfyJ/klzO519Of3RKPXmLkyDcXSh80wRe748XCHfOsn5YjOFzkk09li/wxh19YDi88QNRFGTC+oZYypWdFLSL3BEmV4nLh3gM1QxCUzl7VuXrAtRj7a8w0jaHi5igAPxjkxee9foLeiLgPxsZd25FmU5/nmwBFseEMtsqvkgaQQA0JHZUxrwj1IufblxSP3xXnf6pj4Ggs6GlvS14pgJoaG76ip+G1In3hxPm0IbQ+OQmGp0jABkRi35Xei3706J8bXC1MnN4/Z4venY5tey2jxcQH7BAItPHpyEoqyF423qdWgXCJFPABwQo/56aCssA75psJvdw349g6supqaf+S6aed0sm2ALQBvfOlxCcPnR0mgUtWpvNkM8EmUMy87lVnNs4GBsPe4lskI7QtizjH7oUA5dJ7FOmIPWgdBTZc8ZWiyGd6psNgC1XNhlMoeEiwdil4fAzUBbIRpatXYfnKamu5HuH1HDynGCq0ocLKb8kB/kaWPinGHXvFti2FqkQbewM7M9AHlso+KITE49QHc39uC1N7adBWwHy7+Sb6gRxf1r4aYGHtdLwI=
+  - pip install tox-travis
+  - pip install codecov
+script: tox
+
+after_success:
+  - codecov --flags "py${TRAVIS_PYTHON_VERSION//./}"
