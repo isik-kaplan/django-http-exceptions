@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/qcoumes/django_http_exceptions.svg?branch=master)](https://travis-ci.org/qcoumes/django_http_exceptions)
-[![codecov](https://codecov.io/gh/qcoumes/django_http_exceptions/branch/master/graph/badge.svg)](https://codecov.io/gh/qcoumes/django_http_exceptions)
+[![Build Status](https://travis-ci.org/isik-kaplan/django_http_exceptions.svg?branch=master)](https://travis-ci.org/isik-kaplan/django_http_exceptions)[![codecov](https://codecov.io/gh/isik-kaplan/django_http_exceptions/branch/master/graph/badge.svg)](https://codecov.io/gh/isik-kaplan/django_http_exceptions)
 [![Python 3.5+](https://img.shields.io/badge/python-3.5+-brightgreen.svg)](#)
 [![Django 2.0+](https://img.shields.io/badge/django-2.0+-brightgreen.svg)](#)
 [![PyPI - License](https://img.shields.io/pypi/l/django_http_exceptions.svg)](https://pypi.org/project/django-http-exceptions/)
