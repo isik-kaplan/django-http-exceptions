@@ -17,7 +17,6 @@ from django.urls import path
 
 from . import views
 
-
 urlpatterns = [
     path('from_status/<int:status>/', views.from_status),
     path('from_name/<str:name>/', views.from_name),
