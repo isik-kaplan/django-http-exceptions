@@ -3,6 +3,7 @@ from http import HTTPStatus
 from django.test import Client, SimpleTestCase
 
 from django_http_exceptions import HTTPExceptions
+from django_http_exceptions.exceptions import HTTPException
 from . import views
 
 
@@ -45,3 +46,36 @@ class DjangoHTTPExceptionTestCase(SimpleTestCase):
     def test_does_not_catch_other_exception(self):
         with self.assertRaises(Exception):
             self.client.get("/exception/")
+
+    def test_exceptions_can_be_subclassed(self):
+        class CustomHTTPException(HTTPException):
+            def __init__(self, *a, **kw):
+                if a:
+                    self.first_arg = a[0]
+                super()
+
+            @staticmethod
+            def custom_static_method():
+                return "STATIC METHOD"
+
+            @classmethod
+            def custom_class_method(cls):
+                return "CLASS METHOD"
+
+            def custom_method(self):
+                return self.first_arg
+
+        HTTPExceptions.register_base_exception(CustomHTTPException)
+
+        self.assertEqual(HTTPExceptions.BAD_REQUEST.custom_static_method(), "STATIC METHOD")
+        self.assertEqual(HTTPExceptions.BAD_REQUEST("first argument").custom_static_method(), "STATIC METHOD")
+        self.assertEqual(HTTPExceptions.BAD_REQUEST.custom_class_method(), "CLASS METHOD")
+        self.assertEqual(HTTPExceptions.BAD_REQUEST("first argument").custom_method(), "first argument")
+
+    def test_require_HTTPException_as_base_class(self):
+        class CustomHTTPException:
+            def my_custom_method(self):
+                return "YAY"
+
+        with self.assertRaises(TypeError):
+            HTTPExceptions.register_base_exception(CustomHTTPException)

@@ -29,15 +29,23 @@ class transform(type):
 
         return __new__
 
+    @staticmethod
+    def __noop_transform(key, value, classdict):
+        return value
+
+    @staticmethod
+    def __noop_checks(key, value, classdict):
+        return True
+
     def __new__(mcs, cls, bases, classdict):
-        _transform = classdict['__transform__']
-        _checks = classdict['__checks__']
+        _transform = classdict.get('__transform__', mcs.__noop_transform)
+        _checks = classdict.get('__checks__', mcs.__noop_checks)
         return type.__new__(
             mcs,
             cls,
             bases,
             {
-                **{k: _transform(v) if _checks(k, v) else v
+                **{k: _transform(k, v, classdict) if _checks(k, v, classdict) else v
                    for k, v in classdict.items()},
                 '__new__': mcs.__raise_on_new(cls)
             }
@@ -82,21 +90,28 @@ class HTTPException(Exception):
 class HTTPExceptions(metaclass=transform):
     """@DynamicAttrs."""  # PycharmDisableInspection
     BASE_EXCEPTION = HTTPException
+    encapsulated = ['exceptions', 'register_base_exception']
+    exceptions = []
 
-    def __transform__(value):
+    def __transform__(key, value, classdict):
+        base_exception = classdict.get('BASE_EXCEPTION') or HTTPException
+        if not issubclass(base_exception, HTTPException):
+            raise TypeError('BASE_EXCEPTION must be a subclass of HTTPException.')
         return type(
             value.name,
-            (HTTPException,),
+            (base_exception,),
             {'__module__': 'HTTPExceptions', 'status': value.value,
              'description': value.description}
         )
 
-    def __checks__(key, value):
+    def __checks__(key, value, classdict):
         return all((
             not _is_dunder(key),
             not callable(value),
             not isinstance(value, Exception),
-            not isinstance(value, classmethod)
+            not isinstance(value, classmethod),
+            key != 'encapsulated',
+            key not in classdict.get('encapsulated', []),
         ))
 
     @classmethod
@@ -104,6 +119,14 @@ class HTTPExceptions(metaclass=transform):
         """Get the exception from status code"""
         return getattr(cls, HTTPStatus(code).name)
 
+    @classmethod
+    def register_base_exception(cls, new_exception):
+        for exception in cls.exceptions:
+            if not issubclass(new_exception, HTTPException):
+                raise TypeError('New exception must be a subclass of HTTPException.')
+            getattr(cls, exception).__bases__ = (new_exception,)
+
     # Add all possible HTTP status codes from http.HTTPStatus
     for status in list(HTTPStatus.__members__.values()):
         locals()[status.name] = status
+        exceptions.append(status.name)

@@ -78,6 +78,10 @@ You can just write
 #### `HTTPExceptions.BASE_EXCEPTON`  
 The base exception for all http exception
 
+#### `HTTPExceptions.register_base_exception(exception)`
+Given that `exception` is a class that inherits from `HTTPException` you can customize the exceptions.
+Keep in mind that `HTTPException` is an `Exception` subclass itself.
+
 
 #### `HTTPExceptions.BASE_EXCEPTION.with_response(response)`  
 This is the method for raising exceptions with a response. You can put any response in this method while raising your
