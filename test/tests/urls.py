@@ -25,4 +25,5 @@ urlpatterns = [
     path('exception/', views.exception),
     path('errorify/403/', views.errorify_403),
     path('errorify/404/', views.Errorify404.as_view()),
+    path('not_found/', views.not_found)
 ]

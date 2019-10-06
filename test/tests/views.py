@@ -39,3 +39,7 @@ class Errorify404(View):
 
     def get(self, _):
         return HttpResponse()
+
+
+def not_found(_):
+    raise HTTPExceptions.NOT_FOUND
