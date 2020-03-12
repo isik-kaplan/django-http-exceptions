@@ -54,6 +54,7 @@ class transform(type):
 
 class HTTPException(Exception):
     """@DynamicAttrs."""
+    _error_handlers = []
 
     @classmethod
     def with_response(cls, response):
@@ -71,6 +72,15 @@ class HTTPException(Exception):
     @classmethod
     def register_default_view(cls, view):
         cls._default_view = staticmethod(view)
+
+    @classmethod
+    def register_error_handler(cls, handler):
+        cls._error_handlers.append(handler)
+        return handler
+
+    @classmethod
+    def remove_error_handler(cls, handler):
+        cls._error_handlers.remove(handler)
 
     @classmethod
     def _has_default_view(cls):

@@ -1,4 +1,6 @@
+import contextlib
 from http import HTTPStatus
+from io import StringIO
 
 from django.test import Client, SimpleTestCase
 
@@ -79,3 +81,47 @@ class DjangoHTTPExceptionTestCase(SimpleTestCase):
 
         with self.assertRaises(TypeError):
             HTTPExceptions.register_base_exception(CustomHTTPException)
+
+    def test_error_handlers(self):
+
+        @HTTPExceptions.NOT_FOUND.register_error_handler
+        def handler(request, exc):
+            print("404 logged")
+
+        stdout = StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.client.get('/not_found/')
+
+        self.assertEqual(stdout.getvalue().strip(), '404 logged')
+        HTTPExceptions.NOT_FOUND.remove_error_handler(handler)
+
+    def test_global_error_handler(self):
+
+        @HTTPExceptions.BASE_EXCEPTION.register_error_handler
+        def handler(request, exc):
+            print("error logged")
+
+        stdout = StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.client.get('/not_found/')
+
+        self.assertEqual(stdout.getvalue().strip(), 'error logged')
+        HTTPExceptions.NOT_FOUND.remove_error_handler(handler)
+
+    def test_global_and_single_error_handlers_together(self):
+
+        @HTTPExceptions.BASE_EXCEPTION.register_error_handler
+        def handler_global(request, exc):
+            print("error logged")
+
+        @HTTPExceptions.NOT_FOUND.register_error_handler
+        def handler_404(request, exc):
+            print("404 logged")
+
+        stdout = StringIO()
+        with contextlib.redirect_stdout(stdout):
+            self.client.get('/not_found/')
+
+        self.assertEqual(stdout.getvalue().strip(), 'error logged\n404 logged')
+        HTTPExceptions.NOT_FOUND.remove_error_handler(handler_404)
+        HTTPExceptions.BASE_EXCEPTION.remove_error_handler(handler_global)

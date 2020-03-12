@@ -7,7 +7,7 @@ with open('README.md') as f:
 
 setup(
     name='django_http_exceptions',
-    version='1.2.0',
+    version='1.3.0',
     packages=['django_http_exceptions'],
     url='https://github.com/isik-kaplan/django_http_exceptions',
     description="django raisable http exceptions",

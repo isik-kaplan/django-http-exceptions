@@ -10,6 +10,8 @@ class ExceptionHandlerMiddleware(MiddlewareMixin):
     @staticmethod
     def process_exception(request, exc):
         if isinstance(exc, HTTPExceptions.BASE_EXCEPTION):
+            for handler in exc._error_handlers:
+                handler(request, exc)
             response = getattr(exc, 'response', None)
             if not response and exc._has_default_view():
                 response = exc._get_default_view_response(request)
