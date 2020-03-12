@@ -31,7 +31,7 @@ into this
 ````py
 from django_http_exceptions import HTTPExceptions
 def some_function():
-    raise HTTPExcetions.FORBIDDEN # HTTPExceptions.from_status(403)
+    raise HTTPExceptions.FORBIDDEN # HTTPExceptions.from_status(403)
 
 def view(request):
     return some_function() 
