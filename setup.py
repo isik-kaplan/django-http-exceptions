@@ -11,7 +11,7 @@ setup(
     description="django raisable http exceptions",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    license='APGL-3.0',
+    license='MIT LICENSE',
     author='isik-kaplan',
     author_email='',
     python_requires=">=3.5",
