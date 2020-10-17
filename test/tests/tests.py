@@ -1,8 +1,8 @@
 import contextlib
+import json
+from django.test import Client, SimpleTestCase
 from http import HTTPStatus
 from io import StringIO
-
-from django.test import Client, SimpleTestCase
 
 from django_http_exceptions import HTTPExceptions
 from django_http_exceptions.exceptions import HTTPException
@@ -31,6 +31,11 @@ class DjangoHTTPExceptionTestCase(SimpleTestCase):
     def test_with_content(self):
         response = self.client.get("/with_content/")
         self.assertContains(response, "It is indeed not found", status_code=404)
+
+    def test_with_json(self):
+        response = self.client.get('/with_json/')
+        response_json = response.json()
+        self.assertJSONEqual(json.dumps(response_json), {'response_type': 'json'})
 
     def test_register_default_view(self):
         HTTPExceptions.BAD_REQUEST.register_default_view(views.default_view)

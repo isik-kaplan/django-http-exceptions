@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 
 def _is_dunder(name):
@@ -67,6 +67,12 @@ class HTTPException(Exception):
     def with_content(cls, content):
         exception = cls()
         exception.response = HttpResponse(content, status=exception.status)
+        return exception
+
+    @classmethod
+    def with_json(cls, json_data):
+        exception = cls()
+        exception.response = JsonResponse(json_data)
         return exception
 
     @classmethod

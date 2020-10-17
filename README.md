@@ -98,6 +98,9 @@ This method allow to raise an **HTTPException** with a custom message (can be ei
 For instance, `HTTPExceptions.NOT_FOUND.with_content("The user named 'username' could not be found")`
 would return something equivalent to `HttpResponse("The user named 'username' could not be found", status=404)`.
 
+#### `HTTPExceptions.BASE_EXCEPTION.with_json(json_data)`
+This method allow to raise an **HTTPException** with a custom json response,  
+`json_data` can be anything that `JsonResponse` accepts.
 
 #### `HTTPExceptions.BASE_EXCEPTION.register_default_view(view)`  
 `view` is a function that takes only one argument, `request` when you register a default view to an error class with
