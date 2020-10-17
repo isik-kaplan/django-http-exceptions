@@ -22,6 +22,7 @@ urlpatterns = [
     path('from_name/<str:name>/', views.from_name),
     path('with_response/', views.with_response),
     path('with_content/', views.with_content),
+    path('with_json/', views.with_json),
     path('exception/', views.exception),
     path('errorify/403/', views.errorify_403),
     path('errorify/404/', views.Errorify404.as_view()),

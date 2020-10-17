@@ -21,6 +21,10 @@ def with_content(_):
     raise HTTPExceptions.NOT_FOUND.with_content("It is indeed not found")
 
 
+def with_json(_):
+    raise HTTPExceptions.NOT_FOUND.with_json({"response_type": "json"})
+
+
 def exception(_):
     raise Exception
 
