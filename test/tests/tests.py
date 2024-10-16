@@ -1,11 +1,13 @@
 import contextlib
 import json
-from django.test import Client, SimpleTestCase
 from http import HTTPStatus
 from io import StringIO
 
+from django.test import Client, SimpleTestCase
+
 from django_http_exceptions import HTTPExceptions
 from django_http_exceptions.exceptions import HTTPException
+
 from . import views
 
 
@@ -33,9 +35,9 @@ class DjangoHTTPExceptionTestCase(SimpleTestCase):
         self.assertContains(response, "It is indeed not found", status_code=404)
 
     def test_with_json(self):
-        response = self.client.get('/with_json/')
+        response = self.client.get("/with_json/")
         response_json = response.json()
-        self.assertJSONEqual(json.dumps(response_json), {'response_type': 'json'})
+        self.assertJSONEqual(json.dumps(response_json), {"response_type": "json"})
 
     def test_register_default_view(self):
         HTTPExceptions.BAD_REQUEST.register_default_view(views.default_view)
@@ -95,9 +97,9 @@ class DjangoHTTPExceptionTestCase(SimpleTestCase):
 
         stdout = StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.client.get('/not_found/')
+            self.client.get("/not_found/")
 
-        self.assertEqual(stdout.getvalue().strip(), '404 logged')
+        self.assertEqual(stdout.getvalue().strip(), "404 logged")
         HTTPExceptions.NOT_FOUND.remove_error_handler(handler)
 
     def test_global_error_handler(self):
@@ -108,9 +110,9 @@ class DjangoHTTPExceptionTestCase(SimpleTestCase):
 
         stdout = StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.client.get('/not_found/')
+            self.client.get("/not_found/")
 
-        self.assertEqual(stdout.getvalue().strip(), 'error logged')
+        self.assertEqual(stdout.getvalue().strip(), "error logged")
         HTTPExceptions.NOT_FOUND.remove_error_handler(handler)
 
     def test_global_and_single_error_handlers_together(self):
@@ -125,8 +127,8 @@ class DjangoHTTPExceptionTestCase(SimpleTestCase):
 
         stdout = StringIO()
         with contextlib.redirect_stdout(stdout):
-            self.client.get('/not_found/')
+            self.client.get("/not_found/")
 
-        self.assertEqual(stdout.getvalue().strip(), 'error logged\n404 logged')
+        self.assertEqual(stdout.getvalue().strip(), "error logged\n404 logged")
         HTTPExceptions.NOT_FOUND.remove_error_handler(handler_404)
         HTTPExceptions.BASE_EXCEPTION.remove_error_handler(handler_global)

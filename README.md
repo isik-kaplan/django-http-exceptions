@@ -1,5 +1,5 @@
 [![Build Status](https://app.travis-ci.com/isik-kaplan/django-http-exceptions.svg?token=GLRwtEHQ7cKeAZcq6ZpN&branch=master)](https://app.travis-ci.com/isik-kaplan/django-http-exceptions)
-[![codecov](https://codecov.io/gh/isik-kaplan/django-http-exceptions/branch/master/graph/badge.svg)](https://codecov.io/gh/isik-kaplan/django-http-exceptions) 
+[![codecov](https://codecov.io/gh/isik-kaplan/django-http-exceptions/branch/master/graph/badge.svg)](https://codecov.io/gh/isik-kaplan/django-http-exceptions)
 [![Python 3.5+](https://img.shields.io/badge/python-3.5+-brightgreen.svg)](#)
 [![Django 2.0+](https://img.shields.io/badge/django-2.0+-brightgreen.svg)](#)
 [![PyPI - License](https://img.shields.io/pypi/l/django-http-exceptions.svg)](https://pypi.org/project/django-http-exceptions/)
@@ -14,7 +14,7 @@ It is raisable exceptions for your django views.
 
 ## What is it good for?
 
-It makes this 
+It makes this
 
 ````py
 def some_function():
@@ -34,11 +34,11 @@ def some_function():
     raise HTTPExceptions.FORBIDDEN # HTTPExceptions.from_status(403)
 
 def view(request):
-    return some_function() 
-    
+    return some_function()
+
 ````
 
-meaning that is saves you from boilerplate code. 
+meaning that is saves you from boilerplate code.
 
 It also allows you to hook default views to **all possible http response codes**, meaning that you can use more than the 5-6 django provided error handlers.
 
@@ -61,21 +61,21 @@ And that is it, you are ready to raise your http exceptions.
 
 
 
-## What else? 
+## What else?
 
 
 #### `HTTPExceptions`
 Base class that provides all the exceptions to be raised.
 
 
-#### `HTTPExceptions.from_status(status)`  
-In case you don't want to write  
-`HTTPExceptions.REQUEST_HEADER_FIELDS_TOO_LARGE`  
-You can just write  
+#### `HTTPExceptions.from_status(status)`
+In case you don't want to write
+`HTTPExceptions.REQUEST_HEADER_FIELDS_TOO_LARGE`
+You can just write
 `HTTPExceptions.from_status(431)`
 
 
-#### `HTTPExceptions.BASE_EXCEPTON`  
+#### `HTTPExceptions.BASE_EXCEPTON`
 The base exception for all http exception
 
 #### `HTTPExceptions.register_base_exception(exception)`
@@ -83,44 +83,44 @@ Given that `exception` is a class that inherits from `HTTPException` you can cus
 Keep in mind that `HTTPException` is an `Exception` subclass itself.
 
 
-#### `HTTPExceptions.BASE_EXCEPTION.with_response(response)`  
+#### `HTTPExceptions.BASE_EXCEPTION.with_response(response)`
 This is the method for raising exceptions with a response. You can put any response in this method while raising your
 error.
- 
+
 Let's say you have a view named `index`, then this example would return what `index` function would return, but with
-status code `410`  
+status code `410`
 `HTTPExceptions.GONE.with_response(index(request))`
 
 
-#### `HTTPExceptions.BASE_EXCEPTION.with_content(content)`  
+#### `HTTPExceptions.BASE_EXCEPTION.with_content(content)`
 This method allow to raise an **HTTPException** with a custom message (can be either `str` or `bytes`).
 
 For instance, `HTTPExceptions.NOT_FOUND.with_content("The user named 'username' could not be found")`
 would return something equivalent to `HttpResponse("The user named 'username' could not be found", status=404)`.
 
 #### `HTTPExceptions.BASE_EXCEPTION.with_json(json_data)`
-This method allow to raise an **HTTPException** with a custom json response,  
+This method allow to raise an **HTTPException** with a custom json response,
 `json_data` can be anything that `JsonResponse` accepts.
 
-#### `HTTPExceptions.BASE_EXCEPTION.register_default_view(view)`  
+#### `HTTPExceptions.BASE_EXCEPTION.register_default_view(view)`
 `view` is a function that takes only one argument, `request` when you register a default view to an error class with
-`HTTPExceptions.NOT_FOUND.register_defaul_view(view)`  when `HTTPExceptions.GONE` is raised it returns the view function, 
-but again, with `404` status code. If the error has been raised with `.with_response`, that is used instead.   
+`HTTPExceptions.NOT_FOUND.register_defaul_view(view)`  when `HTTPExceptions.GONE` is raised it returns the view function,
+but again, with `404` status code. If the error has been raised with `.with_response`, that is used instead.
 
 
 #### `get_current_request`
 
-This function gets you the current request anywhere in your django application, making it easier for your dynamic error 
+This function gets you the current request anywhere in your django application, making it easier for your dynamic error
 responses to be created, like in the `HTTPExceptions.GONE.with_response(index(request))` example.
- 
- 
-#### `ExceptionHandlerMiddleware` 
+
+
+#### `ExceptionHandlerMiddleware`
 
 Just there for to exception handling to work.
- 
- 
-#### `ThreadLocalRequestMiddleware` 
- 
+
+
+#### `ThreadLocalRequestMiddleware`
+
 Just there for to `get_current_request` to work.
 
 
@@ -134,7 +134,7 @@ class Subscribe(TemplateView):
     template = SUBSCRIBE_TEMPLATE
 ````
 
- 
+
 ## Avaliable Exceptions
 ```py
 HTTPExceptions.CONTINUE                              # HTTPExceptions.from_status(100)
