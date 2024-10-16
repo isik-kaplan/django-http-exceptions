@@ -72,7 +72,7 @@ class HTTPException(Exception):
     @classmethod
     def with_json(cls, json_data):
         exception = cls()
-        exception.response = JsonResponse(json_data)
+        exception.response = JsonResponse(json_data, status=exception.status)
         return exception
 
     @classmethod
